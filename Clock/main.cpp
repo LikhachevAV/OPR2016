@@ -11,7 +11,7 @@
 
 const int screenWidth = 800;
 const int screenHeight = 600;
-const float PI = M_PI;
+const auto PI = M_PI;
 const int clockCircleSize = 250;
 const int clockCircleThickness = 2;
 
@@ -38,22 +38,30 @@ int main()
 	sf::Vector2f windowCenter = sf::Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
 
 	// Create a list for clock's dots
-	sf::CircleShape dot[60];
-
+	sf::CircleShape hoursMarker[60];
+	sf::RectangleShape minutsMarker[60];
 	// Create dots and place them to very right positions
-	for (int i = 0; i < 60; ++i)
+	for  (int i = 0; i < 60; i++)
 	{
 		x = (clockCircleSize - 10) * cos(angle);
 		y = (clockCircleSize - 10) * sin(angle);
 
 		if (i % 5 == 0)
-			dot[i] = sf::CircleShape(3);
+		{
+			hoursMarker[i] = sf::CircleShape(3);
+			hoursMarker[i].setFillColor(sf::Color::Black);
+			hoursMarker[i].setOrigin(hoursMarker[i].getGlobalBounds().width / 2, hoursMarker[i].getGlobalBounds().height / 2);
+			hoursMarker[i].setPosition(x + window.getSize().x / 2, y + window.getSize().y / 2);
+		}			
 		else
-			dot[i] = sf::CircleShape(1);
-		dot[i].setFillColor(sf::Color::Black);
-		dot[i].setOrigin(dot[i].getGlobalBounds().width / 2, dot[i].getGlobalBounds().height / 2);
-		dot[i].setPosition(x + window.getSize().x / 2, y + window.getSize().y / 2);
-
+		{
+			minutsMarker[i] = sf::RectangleShape(sf::Vector2f(8, 3));
+			minutsMarker[i].setFillColor(sf::Color::Black);
+			minutsMarker[i].setOrigin(minutsMarker[i].getGlobalBounds().width / 2, minutsMarker[i].getGlobalBounds().height / 2);
+			minutsMarker[i].setPosition(x + window.getSize().x / 2, y + window.getSize().y / 2);	
+			minutsMarker[i].setRotation(i*6);
+		}
+		
 		angle = angle + ((2 * PI) / 60);
 	}
 
@@ -134,9 +142,10 @@ int main()
 		// Draw all parts of clock
 		window.draw(clockCircle);
 
-		for (int i = 0; i<60; i++)
+		for (int i = 0; i < 60; i++)
 		{
-			window.draw(dot[i]);
+			window.draw(hoursMarker[i]);
+			window.draw(minutsMarker[i]);
 		}
 
 		window.draw(hourHand);
