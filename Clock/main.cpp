@@ -40,7 +40,7 @@ int main()
 	sf::CircleShape dot[60];
 
 	// Create dots and place them to very right positions
-	for (int i = 0; i<60; i++)
+	for (int i = 0; i < 60; ++i)
 	{
 		x = (clockCircleSize - 10) * cos(angle);
 		y = (clockCircleSize - 10) * sin(angle);
@@ -97,21 +97,6 @@ int main()
 	clockTick.setLoop(true);
 	clockTick.play();
 
-	// Use a part of SFML logo as clock brand
-	sf::Texture clockBrand;
-	if (!clockBrand.loadFromFile("resources/clock-brand.png"))
-	{
-		return EXIT_FAILURE;
-	}
-
-	sf::Sprite clockBrandSprite;
-	clockBrandSprite.setTexture(clockBrand);
-	clockBrandSprite.setOrigin(clockBrandSprite.getTextureRect().left + clockBrandSprite.getTextureRect().width / 2.0f,
-		clockBrandSprite.getTextureRect().top + clockBrandSprite.getTextureRect().height / 2.0f);
-
-	clockBrandSprite.setPosition(window.getSize().x / 2, window.getSize().y - 100);
-
-
 	// Create clock background
 	sf::Texture clockImage;
 	if (!clockImage.loadFromFile("resources/clock-image.png"))
@@ -153,7 +138,6 @@ int main()
 			window.draw(dot[i]);
 		}
 
-		window.draw(clockBrandSprite);
 		window.draw(hourHand);
 		window.draw(minuteHand);
 		window.draw(secondsHand);
