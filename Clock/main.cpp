@@ -40,6 +40,13 @@ int main()
 	// Create a list for clock's dots
 	sf::CircleShape hoursMarker[60];
 	sf::RectangleShape minutsMarker[60];
+
+	// load hours font from file
+	sf::Font font;
+	if (!font.loadFromFile("resources/arial.ttf"))
+	{
+		return EXIT_FAILURE;
+	}
 	// Create dots and place them to very right positions
 	for  (int i = 0; i < 60; i++)
 	{
