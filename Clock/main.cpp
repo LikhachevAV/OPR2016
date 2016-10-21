@@ -3,26 +3,27 @@
 // ctime for getting system time and
 // cmath for sin and cos functions
 ////////////////////////////////////////////////////////////
+#define _USE_MATH_DEFINES
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <ctime>
 #include <cmath>
 
+const int screenWidth = 800;
+const int screenHeight = 600;
+const float PI = M_PI;
+const int clockCircleSize = 250;
+const int clockCircleThickness = 2;
 
-////////////////////////////////////////////////////////////
-/// Entry point of application
-///
-/// \return Application exit code
-///
-////////////////////////////////////////////////////////////
+void Draw() 
+{
+	
+}
+
 int main()
 {
 	// Define some variables and constants
-	const int screenWidth = 800;
-	const int screenHeight = 600;
-	const float PI = 3.1415927;
-	const int clockCircleSize = 250;
-	const int clockCircleThickness = 2;
+	
 	int x, y;
 	float angle = 0.0;
 
