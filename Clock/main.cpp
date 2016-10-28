@@ -8,6 +8,7 @@
 #include <SFML/Audio.hpp>
 #include <ctime>
 #include <cmath>
+#include <string>
 
 const int screenWidth = 800;
 const int screenHeight = 600;
@@ -47,6 +48,8 @@ int main()
 	{
 		return EXIT_FAILURE;
 	}
+	sf::Text digits[12];
+
 	// Create dots and place them to very right positions
 	for  (int i = 0; i < 60; i++)
 	{
@@ -59,6 +62,12 @@ int main()
 			hoursMarker[i].setFillColor(sf::Color::Black);
 			hoursMarker[i].setOrigin(hoursMarker[i].getGlobalBounds().width / 2, hoursMarker[i].getGlobalBounds().height / 2);
 			hoursMarker[i].setPosition(x + window.getSize().x / 2, y + window.getSize().y / 2);
+			digits[i/5].setFont(font);
+			digits[i/5].setColor(sf::Color::Black);
+			digits[i/5].setString(std::to_string(i/5 + 1));
+			digits[i/5].setCharacterSize(20);
+			digits[i/5].setOrigin(digits[i/5].getGlobalBounds().width / 2, digits[i/5].getGlobalBounds().height / 2);
+			digits[i/5].setPosition(x + window.getSize().x / 2, y + window.getSize().y / 2);
 		}			
 		else
 		{
@@ -153,6 +162,8 @@ int main()
 		{
 			window.draw(hoursMarker[i]);
 			window.draw(minutsMarker[i]);
+			if (i % 5 == 0) 
+				window.draw(digits[i/5]);
 		}
 
 		window.draw(hourHand);

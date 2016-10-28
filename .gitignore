@@ -8,3 +8,5 @@
 *.dll
 *.idb
 *.opendb
+*.suo
+*.db
