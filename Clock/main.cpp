@@ -49,7 +49,7 @@ int main()
 		return EXIT_FAILURE;
 	}
 	sf::Text digits[12];
-
+	int currentDigit = 3;
 	// Create dots and place them to very right positions
 	for  (int i = 0; i < 60; i++)
 	{
@@ -64,7 +64,12 @@ int main()
 			hoursMarker[i].setPosition(x + window.getSize().x / 2, y + window.getSize().y / 2);
 			digits[i/5].setFont(font);
 			digits[i/5].setColor(sf::Color::Black);
-			digits[i/5].setString(std::to_string(i/5 + 1));
+			digits[i/5].setString(std::to_string(currentDigit));
+			currentDigit++;
+			if (currentDigit > 12)
+			{
+				currentDigit = 1;
+			}
 			digits[i/5].setCharacterSize(20);
 			digits[i/5].setOrigin(digits[i/5].getGlobalBounds().width / 2, digits[i/5].getGlobalBounds().height / 2);
 			digits[i/5].setPosition(x + window.getSize().x / 2, y + window.getSize().y / 2);
