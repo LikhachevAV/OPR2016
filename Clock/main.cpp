@@ -28,7 +28,7 @@ int main()
 {
 	// Define some variables and constants
 	
-	float x, y, x1, y1;
+	float x, y;
 	float angle = 0.0;
 
 	// Set multisampling level
@@ -59,8 +59,6 @@ int main()
 	{
 		x = (clockCircleSize - 10) * cos(angle);
 		y = (clockCircleSize - 10) * sin(angle);
-		x1 = (charactersCircleSize) * cos(angle);
-		y1 = (charactersCircleSize) * sin(angle);
 
 		if (i % 5 == 0)
 		{
