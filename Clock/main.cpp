@@ -19,11 +19,16 @@ const int clockCircleThickness = 2;
 const int characterSize = 20;
 const float charactersCircleSize = clockCircleSize - characterSize * 1.5;
 
+void InitHoursMarkers()
+{
+
+}
+
 int main()
 {
 	// Define some variables and constants
 	
-	int x, y, x1, y1, dx1;
+	float x, y, x1, y1;
 	float angle = 0.0;
 
 	// Set multisampling level
@@ -85,10 +90,10 @@ int main()
 			minutsMarker[i].setFillColor(sf::Color::Black);
 			minutsMarker[i].setOrigin(minutsMarker[i].getGlobalBounds().width / 2, minutsMarker[i].getGlobalBounds().height / 2);
 			minutsMarker[i].setPosition(x + window.getSize().x / 2, y + window.getSize().y / 2);	
-			minutsMarker[i].setRotation(i*6);
+			minutsMarker[i].setRotation(i * 6);
 		}
 		
-		angle = angle + ((2 * PI) / 60);
+		angle = angle + ((2.0 * PI) / 60);
 	}
 
 	// Create outline of the clock
