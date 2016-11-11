@@ -4,28 +4,27 @@
 // cmath for sin and cos functions
 ////////////////////////////////////////////////////////////
 #define _USE_MATH_DEFINES
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <ctime>
 #include <cmath>
 #include <string>
+#include "main.h"
 
 const int screenWidth = 800;
 const int screenHeight = 600;
 const auto PI = M_PI;
 const int clockCircleSize = 250;
 const int clockCircleThickness = 2;
-
-void Draw() 
-{
-	
-}
+const int characterSize = 20;
+const float charactersCircleSize = clockCircleSize - characterSize * 1.5;
 
 int main()
 {
 	// Define some variables and constants
 	
-	int x, y;
+	int x, y, x1, y1, dx1;
 	float angle = 0.0;
 
 	// Set multisampling level
@@ -46,6 +45,7 @@ int main()
 	sf::Font font;
 	if (!font.loadFromFile("resources/arial.ttf"))
 	{
+		std::cout << "Cantn't load font!" << std::endl;
 		return EXIT_FAILURE;
 	}
 	sf::Text digits[12];
@@ -55,6 +55,8 @@ int main()
 	{
 		x = (clockCircleSize - 10) * cos(angle);
 		y = (clockCircleSize - 10) * sin(angle);
+		x1 = (charactersCircleSize) * cos(angle);
+		y1 = (charactersCircleSize) * sin(angle);
 
 		if (i % 5 == 0)
 		{
@@ -70,9 +72,13 @@ int main()
 			{
 				currentDigit = 1;
 			}
-			digits[i/5].setCharacterSize(20);
-			digits[i/5].setOrigin(digits[i/5].getGlobalBounds().width / 2, digits[i/5].getGlobalBounds().height / 2);
-			digits[i/5].setPosition(x + window.getSize().x / 2, y + window.getSize().y / 2);
+			auto differenceBetweenDigitsAndDots = (float)(clockCircleSize - 2 * characterSize);
+			sf::Vector2f pos = differenceBetweenDigitsAndDots * sf::Vector2f(cos(angle), sin(angle));
+			sf::Vector2f absolutePosition(pos + windowCenter);
+			sf::FloatRect rect = digits[i/5].getGlobalBounds();
+			digits[i/5].setCharacterSize(characterSize);
+			digits[i / 5].setOrigin(rect.width / 2.f, rect.height / 2.f);
+			digits[i / 5].setPosition(absolutePosition.x, absolutePosition.y);
 		}			
 		else
 		{
