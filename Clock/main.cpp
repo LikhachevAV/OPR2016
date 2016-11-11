@@ -10,7 +10,6 @@
 #include <ctime>
 #include <cmath>
 #include <string>
-#include "main.h"
 
 const int screenWidth = 800;
 const int screenHeight = 600;
