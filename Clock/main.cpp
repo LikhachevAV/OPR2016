@@ -17,12 +17,17 @@ const auto PI = M_PI;
 const int clockCircleSize = 250;
 const int clockCircleThickness = 2;
 const int characterSize = 20;
-const float charactersCircleSize = clockCircleSize - characterSize * 1.5;
 
 void InitHoursMarkers()
 {
 
 }
+
+void InitMinutesMarkers()
+{
+
+}
+
 
 int main()
 {
