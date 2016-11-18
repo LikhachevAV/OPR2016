@@ -28,7 +28,7 @@ int main()
 {
 	// Define some variables and constants
 	
-	float x, y;
+	sf::Vector2f currentPosition;
 	float angle = 0.0;
 
 	// Set multisampling level
@@ -57,15 +57,15 @@ int main()
 	// Create dots and place them to very right positions
 	for  (int i = 0; i < 60; i++)
 	{
-		x = (clockCircleSize - 10) * cos(angle);
-		y = (clockCircleSize - 10) * sin(angle);
+		currentPosition.x = (clockCircleSize - 10) * cos(angle);
+		currentPosition.y = (clockCircleSize - 10) * sin(angle);
 
 		if (i % 5 == 0)
 		{
 			hoursMarker[i] = sf::CircleShape(3);
 			hoursMarker[i].setFillColor(sf::Color::Black);
 			hoursMarker[i].setOrigin(hoursMarker[i].getGlobalBounds().width / 2, hoursMarker[i].getGlobalBounds().height / 2);
-			hoursMarker[i].setPosition(x + windowCenter.x, y + windowCenter.y);
+			hoursMarker[i].setPosition(currentPosition + windowCenter);
 			digits[i/5].setFont(font);
 			digits[i/5].setColor(sf::Color::Black);
 			digits[i/5].setString(std::to_string(currentDigit));
@@ -80,14 +80,14 @@ int main()
 			sf::FloatRect rect = digits[i/5].getGlobalBounds();
 			digits[i/5].setCharacterSize(characterSize);
 			digits[i / 5].setOrigin(rect.width / 2.f, rect.height / 2.f);
-			digits[i / 5].setPosition(absolutePosition.x, absolutePosition.y);
+			digits[i / 5].setPosition(absolutePosition);
 		}			
 		else
 		{
 			minutsMarker[i] = sf::RectangleShape(sf::Vector2f(8, 3));
 			minutsMarker[i].setFillColor(sf::Color::Black);
 			minutsMarker[i].setOrigin(minutsMarker[i].getGlobalBounds().width / 2, minutsMarker[i].getGlobalBounds().height / 2);
-			minutsMarker[i].setPosition(x + windowCenter.x, y + windowCenter.y);	
+			minutsMarker[i].setPosition(currentPosition + windowCenter);
 			minutsMarker[i].setRotation(i * 6);
 		}
 		
