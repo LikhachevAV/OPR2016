@@ -18,16 +18,11 @@ const int clockCircleSize = 250;
 const int clockCircleThickness = 2;
 const int characterSize = 20;
 
-void InitHoursMarkers()
+void ClockFaceSetUp(int minutes)
 {
-
+	int hour = 0;
+	//TODO: define this function
 }
-
-void InitMinutesMarkers()
-{
-
-}
-
 
 int main()
 {
@@ -70,7 +65,7 @@ int main()
 			hoursMarker[i] = sf::CircleShape(3);
 			hoursMarker[i].setFillColor(sf::Color::Black);
 			hoursMarker[i].setOrigin(hoursMarker[i].getGlobalBounds().width / 2, hoursMarker[i].getGlobalBounds().height / 2);
-			hoursMarker[i].setPosition(x + window.getSize().x / 2, y + window.getSize().y / 2);
+			hoursMarker[i].setPosition(x + windowCenter.x, y + windowCenter.y);
 			digits[i/5].setFont(font);
 			digits[i/5].setColor(sf::Color::Black);
 			digits[i/5].setString(std::to_string(currentDigit));
@@ -92,7 +87,7 @@ int main()
 			minutsMarker[i] = sf::RectangleShape(sf::Vector2f(8, 3));
 			minutsMarker[i].setFillColor(sf::Color::Black);
 			minutsMarker[i].setOrigin(minutsMarker[i].getGlobalBounds().width / 2, minutsMarker[i].getGlobalBounds().height / 2);
-			minutsMarker[i].setPosition(x + window.getSize().x / 2, y + window.getSize().y / 2);	
+			minutsMarker[i].setPosition(x + windowCenter.x, y + windowCenter.y);	
 			minutsMarker[i].setRotation(i * 6);
 		}
 		
@@ -106,7 +101,7 @@ int main()
 	clockCircle.setOutlineThickness(clockCircleThickness);
 	clockCircle.setOutlineColor(sf::Color::Black);
 	clockCircle.setOrigin(clockCircle.getGlobalBounds().width / 2, clockCircle.getGlobalBounds().height / 2);
-	clockCircle.setPosition(window.getSize().x / 2 + clockCircleThickness, window.getSize().y / 2 + clockCircleThickness);
+	clockCircle.setPosition(windowCenter.x + clockCircleThickness, windowCenter.y + clockCircleThickness);
 
 	// Crate another circle for center
 	sf::CircleShape centerCircle(10);
