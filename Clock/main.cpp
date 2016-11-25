@@ -42,7 +42,7 @@ int main()
 	sf::Vector2f windowCenter = sf::Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
 
 	// Create a list for clock's dots
-	sf::CircleShape hoursMarker[60];
+	sf::CircleShape hoursMarker[12];
 	sf::RectangleShape minutsMarker[60];
 
 	// load hours font from file
@@ -62,13 +62,13 @@ int main()
 
 		if (i % 5 == 0)
 		{
-			hoursMarker[i] = sf::CircleShape(3);
-			hoursMarker[i].setFillColor(sf::Color::Black);
-			hoursMarker[i].setOrigin(hoursMarker[i].getGlobalBounds().width / 2, hoursMarker[i].getGlobalBounds().height / 2);
-			hoursMarker[i].setPosition(currentPosition + windowCenter);
-			digits[i/5].setFont(font);
-			digits[i/5].setColor(sf::Color::Black);
-			digits[i/5].setString(std::to_string(currentDigit));
+			hoursMarker[i / 5] = sf::CircleShape(3);
+			hoursMarker[i / 5].setFillColor(sf::Color::Black);
+			hoursMarker[i / 5].setOrigin(hoursMarker[i / 5].getGlobalBounds().width / 2, hoursMarker[i / 5].getGlobalBounds().height / 2);
+			hoursMarker[i / 5].setPosition(currentPosition + windowCenter);
+			digits[i / 5].setFont(font);
+			digits[i / 5].setColor(sf::Color::Black);
+			digits[i / 5].setString(std::to_string(currentDigit));
 			currentDigit++;
 			if (currentDigit > 12)
 			{
@@ -78,7 +78,7 @@ int main()
 			sf::Vector2f pos = differenceBetweenDigitsAndDots * sf::Vector2f(cos(angle), sin(angle));
 			sf::Vector2f absolutePosition(pos + windowCenter);
 			sf::FloatRect rect = digits[i/5].getGlobalBounds();
-			digits[i/5].setCharacterSize(characterSize);
+			digits[i / 5].setCharacterSize(characterSize);
 			digits[i / 5].setOrigin(rect.width / 2.f, rect.height / 2.f);
 			digits[i / 5].setPosition(absolutePosition);
 		}			
@@ -173,10 +173,12 @@ int main()
 
 		for (int i = 0; i < 60; i++)
 		{
-			window.draw(hoursMarker[i]);
 			window.draw(minutsMarker[i]);
-			if (i % 5 == 0) 
-				window.draw(digits[i/5]);
+			if (i % 5 == 0)
+			{
+				window.draw(hoursMarker[i / 5]);
+				window.draw(digits[i / 5]);
+			}
 		}
 
 		window.draw(hourHand);
