@@ -62,8 +62,6 @@ int main()
 			hoursMarker[i / 5].setOrigin(hoursMarker[i / 5].getGlobalBounds().width / 2, hoursMarker[i / 5].getGlobalBounds().height / 2);
 			hoursMarker[i / 5].setPosition(currentPosition + windowCenter);
 			digits[i / 5].setFont(font);
-			// Use setFillColor() or setOutlineColor() instead.
-			//digits[i / 5].setColor(sf::Color::Black);
 			digits[i / 5].setFillColor(sf::Color::Black);
 			digits[i / 5].setString(std::to_string(currentDigit));
 			currentDigit++;
