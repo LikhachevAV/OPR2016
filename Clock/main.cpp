@@ -4,6 +4,7 @@
 // cmath for sin and cos functions
 ////////////////////////////////////////////////////////////
 #define _USE_MATH_DEFINES
+#define _CRT_SECURE_NO_DEPRECATE
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -17,12 +18,6 @@ const auto PI = M_PI;
 const int clockCircleSize = 250;
 const int clockCircleThickness = 2;
 const int characterSize = 20;
-
-
-void ClockFaceSetUp(int minutes)
-{
-	//TODO: define this function
-}
 
 int main()
 {
@@ -53,7 +48,7 @@ int main()
 		return EXIT_FAILURE;
 	}
 	sf::Text digits[12];
-	int currentDigit = 2;
+	int currentDigit = 3;
 	// Create dots and place them to very right positions
 	for  (int i = 0; i < 60; i++)
 	{
@@ -67,12 +62,14 @@ int main()
 			hoursMarker[i / 5].setOrigin(hoursMarker[i / 5].getGlobalBounds().width / 2, hoursMarker[i / 5].getGlobalBounds().height / 2);
 			hoursMarker[i / 5].setPosition(currentPosition + windowCenter);
 			digits[i / 5].setFont(font);
-			digits[i / 5].setColor(sf::Color::Black);
-			digits[i / 5].setString(std::to_string(currentDigit + 1));
+			// Use setFillColor() or setOutlineColor() instead.
+			//digits[i / 5].setColor(sf::Color::Black);
+			digits[i / 5].setFillColor(sf::Color::Black);
+			digits[i / 5].setString(std::to_string(currentDigit));
 			currentDigit++;
-			if (currentDigit == 12)
+			if (currentDigit > 12)
 			{
-				currentDigit = 0;
+				currentDigit = 1;
 			}
 			auto differenceBetweenDigitsAndDots = (float)(clockCircleSize - 2 * characterSize);
 			sf::Vector2f pos = differenceBetweenDigitsAndDots * sf::Vector2f(cos(angle), sin(angle));
@@ -91,7 +88,7 @@ int main()
 			minutsMarker[i].setRotation(i * 6);
 		}
 		
-		angle = angle + ((2.0 * PI) / 60);
+		angle = angle + ((2.0 * PI) / 60.0);
 	}
 
 	// Create outline of the clock
