@@ -53,7 +53,7 @@ int main()
 		return EXIT_FAILURE;
 	}
 	sf::Text digits[12];
-	int currentDigit = 0;
+	int currentDigit = 2;
 	// Create dots and place them to very right positions
 	for  (int i = 0; i < 60; i++)
 	{
@@ -70,10 +70,10 @@ int main()
 			digits[i / 5].setColor(sf::Color::Black);
 			digits[i / 5].setString(std::to_string(currentDigit + 1));
 			currentDigit++;
-			//if (currentDigit > 12)
-			//{
-			//	currentDigit = 1;
-			//}
+			if (currentDigit == 12)
+			{
+				currentDigit = 0;
+			}
 			auto differenceBetweenDigitsAndDots = (float)(clockCircleSize - 2 * characterSize);
 			sf::Vector2f pos = differenceBetweenDigitsAndDots * sf::Vector2f(cos(angle), sin(angle));
 			sf::Vector2f absolutePosition(pos + windowCenter);
