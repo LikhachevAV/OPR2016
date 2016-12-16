@@ -20,9 +20,7 @@ const int clockCircleThickness = 2;
 const int characterSize = 20;
 
 int main()
-{
-	// Define some variables and constants
-	
+{	
 	sf::Vector2f currentPosition;
 	float angle = 0.0;
 
