@@ -18,9 +18,9 @@ const int clockCircleSize = 250;
 const int clockCircleThickness = 2;
 const int characterSize = 20;
 
+
 void ClockFaceSetUp(int minutes)
 {
-	int hour = 0;
 	//TODO: define this function
 }
 
@@ -53,7 +53,7 @@ int main()
 		return EXIT_FAILURE;
 	}
 	sf::Text digits[12];
-	int currentDigit = 3;
+	int currentDigit = 0;
 	// Create dots and place them to very right positions
 	for  (int i = 0; i < 60; i++)
 	{
@@ -68,12 +68,12 @@ int main()
 			hoursMarker[i / 5].setPosition(currentPosition + windowCenter);
 			digits[i / 5].setFont(font);
 			digits[i / 5].setColor(sf::Color::Black);
-			digits[i / 5].setString(std::to_string(currentDigit));
+			digits[i / 5].setString(std::to_string(currentDigit + 1));
 			currentDigit++;
-			if (currentDigit > 12)
-			{
-				currentDigit = 1;
-			}
+			//if (currentDigit > 12)
+			//{
+			//	currentDigit = 1;
+			//}
 			auto differenceBetweenDigitsAndDots = (float)(clockCircleSize - 2 * characterSize);
 			sf::Vector2f pos = differenceBetweenDigitsAndDots * sf::Vector2f(cos(angle), sin(angle));
 			sf::Vector2f absolutePosition(pos + windowCenter);
