@@ -16,6 +16,7 @@ const int screenWidth = 800;
 const int screenHeight = 600;
 const auto PI = M_PI;
 const int clockCircleSize = 250;
+const int clockCircleDotsCount = 100;
 const int clockCircleThickness = 2;
 const int characterSize = 20;
 const std::string fontPath = "resources/arial.ttf";
@@ -27,17 +28,27 @@ const int minutesRotationDegree = maxAngle / minutesCount;
 
 struct  Clock
 {
+	sf::CircleShape clockCircle;
 	sf::Vector2f center;
 	sf::CircleShape hoursMarker[hoursCount];
 	sf::RectangleShape minutsMarker[minutesCount];
 	sf::Font font;
-	sf::Text hoursDigits[12];
+	sf::Text hoursDigits[hoursCount];
 	//sf::Music clockTick;
 	Clock(sf::RenderWindow & window)
 	{
 		center = sf::Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
 	}
 };
+
+void InitClockCircle(Clock & clock)
+{
+	clock.clockCircle = sf::CircleShape(clockCircleSize, clockCircleDotsCount);
+	clock.clockCircle.setOutlineThickness(clockCircleThickness);
+	clock.clockCircle.setOutlineColor(sf::Color::Black);
+	clock.clockCircle.setOrigin(clock.clockCircle.getGlobalBounds().width / 2, clock.clockCircle.getGlobalBounds().height / 2);
+	clock.clockCircle.setPosition(clock.center.x + clockCircleThickness, clock.center.y + clockCircleThickness);
+}
 
 void InitHoursMarkers(Clock & clock)
 {
@@ -111,6 +122,7 @@ void InitMinutesMarkers(Clock & clock)
 
 void InitClock(Clock & clock)
 {
+	InitClockCircle(clock);
 	InitFont(clock);
 	InitHoursDigits(clock);
 	InitHoursMarkers(clock);
@@ -129,6 +141,10 @@ void HandleEvents(sf::Window & window)
 
 void DrawClock(sf::RenderWindow & window, Clock & clock)
 {
+	auto drawClockCircle = [&]() {
+		window.draw(clock.clockCircle);
+	};
+
 	auto drawHoursDigits = [&]() {
 		for (int i = 0; i < hoursCount; i++)
 		{
@@ -153,6 +169,7 @@ void DrawClock(sf::RenderWindow & window, Clock & clock)
 		}
 	};
 
+	drawClockCircle();
 	drawHoursDigits();
 	drawHoursMarkers();
 	drawMinutesMarkers();
