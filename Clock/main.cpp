@@ -25,7 +25,7 @@ struct  Clock
 	sf::RectangleShape hourHand;
 	sf::RectangleShape minutesHand;
 	sf::RectangleShape secondsHand;
-	//sf::Music clockTick;
+	sf::Music tick;
 	Clock(sf::RenderWindow & window)
 	{
 		center = sf::Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f);
@@ -39,6 +39,14 @@ sf::RectangleShape GetHand(float width, float height, const sf::Vector2f & cente
 	hand.setOrigin(hand.getGlobalBounds().width / 2, hand.getGlobalBounds().height - 25);
 	hand.setPosition(center);
 	return hand;
+}
+
+bool InitTick(Clock & clock)
+{
+	if (!clock.tick.openFromFile(clockTickPath))
+		return EXIT_FAILURE;
+	clock.tick.setLoop(true);
+	clock.tick.play();
 }
 
 void InitHourHand(Clock & clock)
@@ -94,11 +102,12 @@ void InitHoursMarkers(Clock & clock)
 	}
 }
 
-void InitFont(Clock & clock)
+bool InitFont(Clock & clock)
 {
 	if (!clock.font.loadFromFile(fontPath))
 	{
 		std::cout << "Cantn't load font!" << std::endl;
+		return false;
 	}
 }
 
@@ -144,10 +153,11 @@ void InitMinutesMarkers(Clock & clock)
 	}
 }
 
-void InitClock(Clock & clock)
+bool InitClock(Clock & clock)
 {
+	bool isClockInitialize = true;
 	InitClockCircle(clock);
-	InitFont(clock);
+	isClockInitialize = isClockInitialize && InitFont(clock);
 	InitHoursDigits(clock);
 	InitHoursMarkers(clock);
 	InitMinutesMarkers(clock);
@@ -155,6 +165,8 @@ void InitClock(Clock & clock)
 	InitHourHand(clock);
 	InitMinutesHand(clock);
 	InitSecondsHand(clock);
+	isClockInitialize = isClockInitialize && InitTick(clock);
+	return isClockInitialize;
 }
 
 void HandleEvents(sf::Window & window)
@@ -233,13 +245,16 @@ void ModifyClock(Clock & clock)
 	clock.secondsHand.setRotation(ptm->tm_sec * 6);
 }
 
-int main()
+bool main()
 {
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 8;
 	sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "SFML Analog Clock", sf::Style::Close, settings);
 	Clock clock(window);
-	InitClock(clock);
+	if (!InitClock(clock))
+	{
+		return false;
+	};
 	while (window.isOpen())
 	{
 		HandleEvents(window);
@@ -247,5 +262,5 @@ int main()
 		window.clear(sf::Color::White);
 		DrawClock(window, clock);
 	}
-	return EXIT_SUCCESS;
+	return true;
 }
