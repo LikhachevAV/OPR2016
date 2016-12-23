@@ -11,24 +11,7 @@
 #include <ctime>
 #include <cmath>
 #include <string>
-
-const int screenWidth = 800;
-const int screenHeight = 600;
-const auto PI = M_PI;
-const float clockCircleRadius = 250;
-const float  centerCircleRadios = 10;
-const size_t circlesDotsCount = 100;
-const float clockCircleThickness = 2;
-const int characterSize = 20;
-const std::string fontPath = "resources/arial.ttf";
-const int hoursCount = 12;
-const int minutesCount = 60;
-const int maxAngle = 360;
-const int hoursRotationDegree = maxAngle / hoursCount;
-const int minutesRotationDegree = maxAngle / minutesCount;
-const float hoursHandWidth = 5;
-const float hoursHandHeight = 180;
-const sf::Color hoursHandColor = sf::Color::Black;
+#include "ClockConsts.h"
 
 struct  Clock
 {
@@ -40,6 +23,8 @@ struct  Clock
 	sf::Font font;
 	sf::Text hoursDigits[hoursCount];
 	sf::RectangleShape hourHand;
+	sf::RectangleShape minutesHand;
+	sf::RectangleShape secondsHand;
 	//sf::Music clockTick;
 	Clock(sf::RenderWindow & window)
 	{
@@ -63,12 +48,12 @@ void InitHourHand(Clock & clock)
 
 void InitMinutesHand(Clock & clock)
 {
-	//TODO
+	clock.minutesHand = GetHand(minutesHandWidth, minutesHandHeight, clock.center, minutesHandColor);
 }
 
 void InitSecondsHand(Clock & clock)
 {
-	//TODO
+	clock.secondsHand = GetHand(secondsHandWidth, secondsHandHeight, clock.center, secondsHandColor);
 }
 
 void InitClockCircle(Clock & clock)
@@ -189,11 +174,11 @@ void DrawClock(sf::RenderWindow & window, Clock & clock)
 	};
 
 	auto drawMinutesHand = [&]() {
-		//TODO
+		window.draw(clock.minutesHand);
 	};
 
 	auto drawSecondsHand = [&]() {
-		//TODO
+		window.draw(clock.secondsHand);
 	};
 
 	auto drawCenterCircle = [&]() {
@@ -239,6 +224,15 @@ void DrawClock(sf::RenderWindow & window, Clock & clock)
 	window.display();
 }
 
+void ModifyClock(Clock & clock)
+{
+	std::time_t currentTime = std::time(NULL);
+	struct tm * ptm = localtime(&currentTime);
+	clock.hourHand.setRotation(ptm->tm_hour * 30 + (ptm->tm_min / 2));
+	clock.minutesHand.setRotation(ptm->tm_min * 6 + (ptm->tm_sec / 12));
+	clock.secondsHand.setRotation(ptm->tm_sec * 6);
+}
+
 int main()
 {
 	sf::ContextSettings settings;
@@ -249,6 +243,7 @@ int main()
 	while (window.isOpen())
 	{
 		HandleEvents(window);
+		ModifyClock(clock);
 		window.clear(sf::Color::White);
 		DrawClock(window, clock);
 	}
