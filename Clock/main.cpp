@@ -19,12 +19,17 @@ const int clockCircleSize = 250;
 const int clockCircleThickness = 2;
 const int characterSize = 20;
 const std::string fontPath = "resources/arial.ttf";
+const int hoursCount = 12;
+const int minutesCount = 60;
+const int maxAngle = 360;
+const int hoursRotationDegree = maxAngle / hoursCount;
+const int minutesRotationDegree = maxAngle / minutesCount;
 
 struct  Clock
 {
 	sf::Vector2f center;
-	sf::CircleShape hoursMarker[12];
-	sf::RectangleShape minutsMarker[60];
+	sf::CircleShape hoursMarker[hoursCount];
+	sf::RectangleShape minutsMarker[minutesCount];
 	sf::Font font;
 	sf::Text hoursDigits[12];
 	//sf::Music clockTick;
@@ -48,9 +53,9 @@ void InitHoursMarkers(Clock & clock)
 		clock.hoursMarker[i].setOrigin(clock.hoursMarker[i].getGlobalBounds().width / 2,
 			clock.hoursMarker[i].getGlobalBounds().height / 2);
 		clock.hoursMarker[i].setPosition(currentPosition + clock.center);
-		clock.hoursMarker[i].setRotation(i * 30);
+		clock.hoursMarker[i].setRotation(float(i * hoursRotationDegree));
 
-		angle = angle + ((2.0 * PI) / 12.0);
+		angle = angle + (float)((2.0 * PI) / hoursCount);
 	}
 }
 
@@ -65,7 +70,7 @@ void InitFont(Clock & clock)
 void InitHoursDigits(Clock & clock)
 {
 	float angle = -45.0;
-	for (int i = 0; i < 12; ++i)
+	for (int i = 0; i < hoursCount; ++i)
 	{
 		clock.hoursDigits[i].setFont(clock.font);
 		clock.hoursDigits[i].setFillColor(sf::Color::Black);
@@ -77,7 +82,7 @@ void InitHoursDigits(Clock & clock)
 		clock.hoursDigits[i].setCharacterSize(characterSize);
 		clock.hoursDigits[i].setOrigin(rect.width / 2.f, rect.height / 2.f);
 		clock.hoursDigits[i].setPosition(absolutePosition);
-		angle = angle + ((2.0 * PI) / 12.0);
+		angle = angle + (float)((2.0 * PI) / (hoursCount));
 	}
 }
 
@@ -85,7 +90,7 @@ void InitMinutesMarkers(Clock & clock)
 {
 	sf::Vector2f currentPosition;
 	float angle = 0.0;
-	for (int i = 0; i < 60; i++)
+	for (int i = 0; i < minutesCount; i++)
 	{
 		currentPosition.x = (clockCircleSize - 10) * cos(angle);
 		currentPosition.y = (clockCircleSize - 10) * sin(angle);
@@ -97,10 +102,10 @@ void InitMinutesMarkers(Clock & clock)
 			clock.minutsMarker[i].setOrigin(clock.minutsMarker[i].getGlobalBounds().width / 2,
 				clock.minutsMarker[i].getGlobalBounds().height / 2);
 			clock.minutsMarker[i].setPosition(currentPosition + clock.center);
-			clock.minutsMarker[i].setRotation(i * 6);
+			clock.minutsMarker[i].setRotation(float(i * minutesRotationDegree));
 		}
 
-		angle = angle + ((2.0 * PI) / 60.0);
+		angle = angle + (float)((2.0 * PI) / minutesCount);
 	}
 }
 
@@ -125,21 +130,21 @@ void HandleEvents(sf::Window & window)
 void DrawClock(sf::RenderWindow & window, Clock & clock)
 {
 	auto drawHoursDigits = [&]() {
-		for (int i = 0; i < 12; i++)
+		for (int i = 0; i < hoursCount; i++)
 		{
 			window.draw(clock.hoursDigits[i]);
 		}
 	};
 
 	auto drawHoursMarkers = [&]() {
-		for (int i = 0; i < 12; ++i)
+		for (int i = 0; i < hoursCount; ++i)
 		{
 			window.draw(clock.hoursMarker[i]);
 		}
 	};
 
 	auto drawMinutesMarkers = [&] (){
-		for (int i = 0; i < 60; ++i)
+		for (int i = 0; i < minutesCount; ++i)
 		{
 			if (i % 5 != 0)
 			{
