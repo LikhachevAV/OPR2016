@@ -18,14 +18,15 @@ const auto PI = M_PI;
 const int clockCircleSize = 250;
 const int clockCircleThickness = 2;
 const int characterSize = 20;
+const std::string fontPath = "resources/arial.ttf";
 
 struct  Clock
 {
 	sf::Vector2f center;
 	sf::CircleShape hoursMarker[12];
 	sf::RectangleShape minutsMarker[60];
-	//sf::Font font;
-	sf::Text digits[12];
+	sf::Font font;
+	sf::Text hoursDigits[12];
 	//sf::Music clockTick;
 	Clock(sf::RenderWindow & window)
 	{
@@ -37,7 +38,7 @@ void InitHoursMarkers(Clock & clock)
 {
 	sf::Vector2f currentPosition;
 	float angle = 0.0;
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < 12; ++i)
 	{
 		currentPosition.x = (clockCircleSize - 10) * cos(angle);
 		currentPosition.y = (clockCircleSize - 10) * sin(angle);
@@ -49,6 +50,33 @@ void InitHoursMarkers(Clock & clock)
 		clock.hoursMarker[i].setPosition(currentPosition + clock.center);
 		clock.hoursMarker[i].setRotation(i * 30);
 
+		angle = angle + ((2.0 * PI) / 12.0);
+	}
+}
+
+void InitFont(Clock & clock)
+{
+	if (!clock.font.loadFromFile(fontPath))
+	{
+		std::cout << "Cantn't load font!" << std::endl;
+	}
+}
+
+void InitHoursDigits(Clock & clock)
+{
+	float angle = -45.0;
+	for (int i = 0; i < 12; ++i)
+	{
+		clock.hoursDigits[i].setFont(clock.font);
+		clock.hoursDigits[i].setFillColor(sf::Color::Black);
+		clock.hoursDigits[i].setString(std::to_string(i + 1));
+		auto differenceBetweenhoursDigitsAndDots = (float)(clockCircleSize - 2 * characterSize);
+		sf::Vector2f pos = differenceBetweenhoursDigitsAndDots * sf::Vector2f(cos(angle), sin(angle));
+		sf::Vector2f absolutePosition(pos + clock.center);
+		sf::FloatRect rect = clock.hoursDigits[i].getGlobalBounds();
+		clock.hoursDigits[i].setCharacterSize(characterSize);
+		clock.hoursDigits[i].setOrigin(rect.width / 2.f, rect.height / 2.f);
+		clock.hoursDigits[i].setPosition(absolutePosition);
 		angle = angle + ((2.0 * PI) / 12.0);
 	}
 }
@@ -78,6 +106,8 @@ void InitMinutesMarkers(Clock & clock)
 
 void InitClock(Clock & clock)
 {
+	InitFont(clock);
+	InitHoursDigits(clock);
 	InitHoursMarkers(clock);
 	InitMinutesMarkers(clock);
 }
@@ -94,15 +124,22 @@ void HandleEvents(sf::Window & window)
 
 void DrawClock(sf::RenderWindow & window, Clock & clock)
 {
-	auto drawHoursMarkers = [&]() {
+	auto drawHoursDigits = [&]() {
 		for (int i = 0; i < 12; i++)
+		{
+			window.draw(clock.hoursDigits[i]);
+		}
+	};
+
+	auto drawHoursMarkers = [&]() {
+		for (int i = 0; i < 12; ++i)
 		{
 			window.draw(clock.hoursMarker[i]);
 		}
 	};
 
 	auto drawMinutesMarkers = [&] (){
-		for (int i = 0; i < 60; i++)
+		for (int i = 0; i < 60; ++i)
 		{
 			if (i % 5 != 0)
 			{
@@ -111,6 +148,7 @@ void DrawClock(sf::RenderWindow & window, Clock & clock)
 		}
 	};
 
+	drawHoursDigits();
 	drawHoursMarkers();
 	drawMinutesMarkers();
 	window.display();
